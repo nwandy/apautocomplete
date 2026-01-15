@@ -66,10 +66,32 @@ Esempi:
      fields: [
          "Id", "Cognome", "Nome","Giorno", "Mese", "Anno", "Ore", "Type"],
      view:"list",
-   });
-    </script>
+   	});
+	</script>
 
-
+Campi e definizioni:
+**queryfield**: nome della variabile che verrà aggiunta all'url con il valore da selezionare 
+		*obbligatorio*
+**valuefield**: nome del campo dell'array da inserire nel campo input quando viene selezionata la riga
+		*obbligatorio*
+**fields**: elenco dei campi del risultato da visualizzare 
+		*obbligatorio*
+**mustexist**: flag per accettare solo i valori della lista
+		*default true*
+**querylen**: numero di caratteri da digitare prima che parta la ricerca
+		*default 1*
+**maxlen**: numero di righe risultato da visualizzare
+		*default 10*
+**select**: funzione richiamata quando si seleziona un valore 
+		*non obbligatorio*
+**view**: tipo visualizzazione: table o list
+		*default "list"*
+**type**: tipo di dato da utilizzare: ajax o json
+		*default ajax*
+**data**: riferimento ad array con dati
+		*obbligatorio se type=json*
+**url**: funzione da richiamare per lettura e filtro dati  
+		*obbligatorio se type=ajax*
 Esempio
  valori:
 	url: funzione da richiamare che ritorna array object json (es: [{id:1, val:"abc"},{{id:2, val:"cde"}])(es url: ActionResult getData(string val)
