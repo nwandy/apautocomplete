@@ -51,7 +51,9 @@ Campi e definizioni:
 
 *obbligatorio se type=ajax*
 
-Esempi:
+**Esempi:**
+
+**Esempio 1: autocomplete da Json**
  
 
     <input class="form-control " id="myid" name="myid" type="text" value="">
@@ -116,6 +118,25 @@ Esempi:
    	});
 	</script>
 
+
+**Esempio 2: autocomplete da Ajax**
+ 
+
+    <input class="form-control " id="myid" name="myid" type="text" value="">
+    <script>
+    
+    $("#myid").apautocomplete({
+     queryfield: "Nome",
+     valuefield: "NomeCompleto",
+     querylen: 2,
+     mustexists: true,
+     maxlen: 10,
+     fields: [
+         "Id", "Cognome", "Nome","Giorno", "Mese", "Anno", "Ore", "Type"],
+     view:"list",
+	 url:"/getData",
+   	});
+	</script>
 
 		
  
