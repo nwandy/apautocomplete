@@ -11,55 +11,55 @@ Easy, simple, useful!
 [Demo and Samples][samples]
 
 
-Campi e definizioni:
+Fields and definition:
  
-**queryfield**: nome della variabile che verrà aggiunta all'url con il valore da selezionare
+**queryfield**: variable name added to query (http://mysite.com/<url>?<queryfiled>=<entered value>)
 
-*obbligatorio*
+*mandatory - default="value"*
 
-**valuefield**: nome del campo dell'array da inserire nel campo input quando viene selezionata la riga
+**valuefield**: field name in json object that will be inserted in input field
 
-*obbligatorio*
+*mandatory if array is a json object*
 	
-**fields**: elenco dei campi del risultato da visualizzare
+**fields**: fields list to show
 
-*obbligatorio*
+*mandatory if array is a json object*
 		
-**mustexist**: flag per accettare solo i valori della lista
+**mustexist**: if true, only list values are accepted
 
 *default true*
 		
-**querylen**: numero di caratteri da digitare prima che parta la ricerca
+**querylen**: chras number to start query
 
 *default 1*
 		
-**maxlen**: numero di righe risultato da visualizzare
+**maxlen**: rows number to show in list in every page
 
 *default 10*
 		
-**select**: funzione richiamata quando si seleziona un valore
+**select**: function when value is selected
 
-*non obbligatorio*
+*not mandatory*
 		
 **view**: tipo visualizzazione: table o list
 
 *default "list"*
 		
-**type**: tipo di dato da utilizzare: ajax o json
+**type**: view type: ajax or json
 
-*default ajax*
+*default json*
 
-**data**: riferimento ad array con dati
+**data**: variable or function with data values
 
-*obbligatorio se type=json*
+*mandatory if type=json*
 		
-**url**: funzione da richiamare per lettura e filtro dati
+**url**: web service or function to call if ajax
 
-*obbligatorio se type=ajax*
+*mandatory if type=ajax*
  
-**Esempi:**
+**Samples:**
 
-**Esempio 1: autocomplete da Json**
+**Sample 1: autocomplete from Json**
  
 
     <input class="form-control " id="myid" name="myid" type="text" value="">
@@ -125,7 +125,7 @@ Campi e definizioni:
 	</script>
 
 
-**Esempio 2: autocomplete da Ajax**
+**Sample 2: autocomplete from Ajax**
  
 
     <input class="form-control " id="myid" name="myid" type="text" value="">
