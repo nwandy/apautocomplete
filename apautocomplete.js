@@ -21,6 +21,7 @@ $.apautocomplete = function (options, origin) {
     me.select = options.select ? options.select : me.select;
     me.divlist = options.divlist ? options.divlist : me.divlist;
     me.data = options.data ? options.data : me.data;
+    me.searchtype = options.searchtype ? options.searchtype : me.searchtype;
     me.origindata = me.data;
     me.mustexists = typeof options.mustexists === "undefined" ? me.mustexists: options.mustexists;
     $(origin).data('core', me);
@@ -28,12 +29,13 @@ $.apautocomplete = function (options, origin) {
 $.apautocomplete.prototype = {
     inpidnum: 0,
     inpid: 0,
-    queryfield: "",
+    queryfield: "value",
     querylen: 1,
-    type: "ajax",//json
+    type: "json",//ajax
     url: "",
     maxlen: 10,
     fields: [],
+    searchtype:"contains",
     control: "",
     divlist: "",
     data: [],
@@ -125,11 +127,22 @@ $.apautocomplete.prototype = {
         var val = $inp.val().toUpperCase();
         if (val == "") { core.viewdata = core.data; return; }
         var data = core.origindata;
+         
         var datafiltered = [];
         $.each(data, function (k, r) {
-            var f = r[core.valuefield].toUpperCase();
-            if (f.indexOf(val) >= 0) {
-                datafiltered.push(r);
+            var f;
+             if (core.fields.lenght > 0) { f = r[core.valuefield].toUpperCase(); }
+            else { f = r.toUpperCase(); }
+           
+            if (core.searchtype == "contains") {
+                if (f.indexOf(val) >= 0) {
+                    datafiltered.push(r);
+                }
+            }
+            else {
+                if (f.startsWith(val)) {
+                    datafiltered.push(r);
+                }
             }
         })
         core.data = datafiltered;
@@ -170,6 +183,7 @@ $.apautocomplete.prototype = {
         if (core.viewdataend < core.data.length) {
             succ = true;
         }
+       
         core.viewData(prec, succ);
     },
     select: function (value, riga) {
@@ -200,41 +214,71 @@ $.apautocomplete.prototype = {
             if (core.view == "list") {
                 var $b = $("<div>");
                 $b.data("value", row);
-                var val = "", add = "";
-                $.each(core.fields, function (k, v) {
-                    val += add + row[v];
-                    add = " - ";
-                })
-                $b.append(val);
-                $b.bind("click", function (e) {
-                    e.preventDefault();
-                    var $inp =  $("#apacbase" + core.inpidnum).children("input");
-                    $inp.val(row[core.valuefield])
-                    $inp.focus();
-                    $list.empty();
-                    core.select(row[core.valuefield], row);
-                });
+                 
+                if (core.fields.length > 0) {
+                    var val = "", add = "";
+                    $.each(core.fields, function (k, v) {
+                        val += add + row[v];
+                        add = " - ";
+                    })
+                    $b.append(val);
+                    $b.bind("click", function (e) {
+                        e.preventDefault();
+                        var $inp = $("#apacbase" + core.inpidnum).children("input");
+                        $inp.val(row[core.valuefield])
+                        $inp.focus();
+                        $list.empty();
+                        core.select(row[core.valuefield], row);
+                    });
+                }
+                else {
+                    $b.append(row);
+                    $b.bind("click", function (e) {
+                        e.preventDefault();
+                        var $inp = $("#apacbase" + core.inpidnum).children("input");
+                        $inp.val(row)
+                        $inp.focus();
+                        $list.empty();
+                        core.select(row, row);
+                    });
+                }
+             
                 $list.append($b);
             } // if list
             if (core.view == "table") {
                 $tr = $("<tr>");
                 $tr.data("value", row);
-                $.each(core.fields, function (k, v) {
+                if (core.fields.length > 0) {
+                    $.each(core.fields, function (k, v) {
+                        $th = $("<td>");
+                        $th.append(row[v])
+                        $tr.append($th)
+                        /*if (v == core.field) {*/
+                        $th.bind("click", function (e) {
+                            e.preventDefault();
+                            var $inp = $(this).closest("div").parent().children("input")
+                            var ar = $(this).closest("tr").data("value");
+                            $inp.val(ar[core.valuefield])
+                            $inp.focus();
+                            $list.empty();
+                            core.select(ar[core.valuefield], ar);
+                        }); // bind
+                    }); // each
+                }// if
+                else {
                     $th = $("<td>");
-                    $th.append(row[v])
-                    $tr.append($th)
-                    /*if (v == core.field) {*/
+                    $th.append(row);
                     $th.bind("click", function (e) {
                         e.preventDefault();
                         var $inp = $(this).closest("div").parent().children("input")
                         var ar = $(this).closest("tr").data("value");
-                        $inp.val(ar[core.valuefield])
+                        $inp.val(ar)
                         $inp.focus();
                         $list.empty();
-                        core.select(ar[core.valuefield], ar);
-                    });
-                    //}
-                })// if table
+                        core.select(ar, ar);
+                    }); // bind
+                    $tr.append($th)
+                }
                 $tbd.append($tr);
             }
         }// for
@@ -323,10 +367,11 @@ $.apautocomplete.prototype = {
             core.waiting(true);
             if (core.type == "ajax")// query server
             {
-                var url = core.url + (core.url.indexOf("?") > 0 ? "&" : "?") + core.queryfield + "=" + val;
+                var url = core.url + (core.url.indexOf("?") > 0 ? "&" : "?") + "searchtype=" + core.searchtype +"&"+ core.queryfield + "=" + val;
                 $.ajax({
                     url: url,
                     success: function (data) {
+                            
                         core.waiting(false);
                         core.origindata = data;
                         core.data = data;
