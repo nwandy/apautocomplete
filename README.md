@@ -2,11 +2,17 @@
 
 Autocomplete jQuery+Bootstrap
 
-Crea autocomplete per qualunque campo input.
-L'origine dei dati può essere un array di valori oppure una chiamata ajax.
+Create an autocomplete list for any input field. 
+
+The data source can be an array of values, a JSON object, or an AJAX call. 
+
+Easy, simple, useful!
+
+[Demo and Samples][samples]
+
 
 Campi e definizioni:
-
+ 
 **queryfield**: nome della variabile che verrà aggiunta all'url con il valore da selezionare
 
 *obbligatorio*
@@ -50,7 +56,7 @@ Campi e definizioni:
 **url**: funzione da richiamare per lettura e filtro dati
 
 *obbligatorio se type=ajax*
-
+ 
 **Esempi:**
 
 **Esempio 1: autocomplete da Json**
@@ -137,6 +143,6 @@ Campi e definizioni:
 	 url:"/getData",
    	});
 	</script>
-
+ [samples]: <https://www.netweb.it/indexen.html>
 		
  
