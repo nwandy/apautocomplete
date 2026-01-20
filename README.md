@@ -13,7 +13,7 @@ Easy, simple, useful!
 
 Fields and definition:
  
-**queryfield**: variable name added to query (http://mysite.com/<url>?<queryfiled>=<entered value>)
+**queryfield**: variable name added to query ```sh(http://mysite.com/<url>?<queryfiled>=<entered value>)```
 
 *mandatory - default="value"*
 
