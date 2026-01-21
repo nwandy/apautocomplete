@@ -127,11 +127,12 @@ $.apautocomplete.prototype = {
         var val = $inp.val().toUpperCase();
         if (val == "") { core.viewdata = core.data; return; }
         var data = core.origindata;
-         
+      
         var datafiltered = [];
         $.each(data, function (k, r) {
             var f;
-             if (core.fields.lenght > 0) { f = r[core.valuefield].toUpperCase(); }
+            
+            if (core.fields.length > 0) { f = r[core.valuefield].toUpperCase(); }
             else { f = r.toUpperCase(); }
            
             if (core.searchtype == "contains") {
@@ -230,16 +231,19 @@ $.apautocomplete.prototype = {
                         $list.empty();
                         core.select(row[core.valuefield], row);
                     });
-                }
+                } // if fields
                 else {
                     $b.append(row);
+                    
                     $b.bind("click", function (e) {
                         e.preventDefault();
+                        var ar = $(this).data("value");
                         var $inp = $("#apacbase" + core.inpidnum).children("input");
-                        $inp.val(row)
+                      
+                        $inp.val(ar)
                         $inp.focus();
                         $list.empty();
-                        core.select(row, row);
+                        core.select(ar, ar);
                     });
                 }
              
@@ -264,7 +268,7 @@ $.apautocomplete.prototype = {
                             core.select(ar[core.valuefield], ar);
                         }); // bind
                     }); // each
-                }// if
+                }// if fields
                 else {
                     $th = $("<td>");
                     $th.append(row);
@@ -278,7 +282,7 @@ $.apautocomplete.prototype = {
                         core.select(ar, ar);
                     }); // bind
                     $tr.append($th)
-                }
+                } // else fields
                 $tbd.append($tr);
             }
         }// for
